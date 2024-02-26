@@ -47,7 +47,7 @@ jobs:
         shell: bash
 
       - name: Code Deploy
-        run: | 
+        run: |
           aws deploy create-deployment \
             --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
             --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \

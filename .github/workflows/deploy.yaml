@@ -31,6 +31,9 @@ jobs:
         run: ./gradlew build
         shell: bash
 
+      - run: npm install jest-worker
+
+
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA .
         shell: bash

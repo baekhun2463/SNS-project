@@ -52,16 +52,16 @@ node {
     download = true
 }
 
-tasks.register('npmBuild', NpmTask) {
+task npmBuild(type: NpmTask) {
     args = ['run', "build"]
 }
 
-tasks.register('copyFrontEnd', Copy) {
+task copyFrontEnd(type: Copy) {
     from "$projectDir/front-end/static"
     into 'build/resources/main/static/.'
 }
 
-tasks.register('cleanFrontEnd', Delete) {
+task cleanFrontEnd(type: Delete) {
     delete "$projectDir/front-end/static", "$projectDir/front-end/node_modules"
 }
 

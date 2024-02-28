@@ -48,7 +48,7 @@ jar {
 
 node {
     nodeModulesDir = file("$projectDir/front-end")
-    version = '21.6.2'
+    version = '18.3.0'
     download = true
 }
 

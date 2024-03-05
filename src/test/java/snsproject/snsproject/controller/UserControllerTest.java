@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import snsproject.snsproject.controller.request.UserJoinRequest;
 import snsproject.snsproject.controller.request.UserLoginRequest;
+import snsproject.snsproject.exception.ErrorCode;
 import snsproject.snsproject.exception.SnsApplicationException;
 import snsproject.snsproject.model.User;
 import snsproject.snsproject.service.UserService;
@@ -96,7 +97,7 @@ public class UserControllerTest {
         String userName = "userName";
         String password = "password";
 
-        when(userService.login(userName, password)).thenThrow(new SnsApplicationException());
+        when(userService.login(userName, password)).thenThrow(new SnsApplicationException(ErrorCode.DUPLICATED_USER_NAME, ""));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)

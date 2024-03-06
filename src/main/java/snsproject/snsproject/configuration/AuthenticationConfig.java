@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import snsproject.snsproject.configuration.filter.JwtTokenFilter;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -30,11 +33,11 @@ public class AuthenticationConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                )
 //                .exceptionHandling(exceptions -> exceptions
 //                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 //                )
-//                .addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

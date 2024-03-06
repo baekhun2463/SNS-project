@@ -1,4 +1,4 @@
-package snsproject.configuration;
+package snsproject.snsproject.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

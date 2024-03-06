@@ -2,7 +2,7 @@ spring.datasource:
     hikari.maximum-pool-size: 4
     url: jdbc:postgresql://snsproject.cjtejhjcljia.ap-northeast-2.rds.amazonaws.com:5432/sns
     username: snsproject
-    password:
+    password: qorwlgns12
     driver-class-name: org.postgresql.Driver
 
 spring:
@@ -13,3 +13,7 @@ spring:
             dialect: org.hibernate.dialect.PostgreSQLDialect
             format_sql: true
         show-sql: true
+
+jwt:
+    secret-key: sns_project.baekjihun_project.secret_key
+    token.expired-time-ms: 2592000000

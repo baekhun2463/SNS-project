@@ -1,6 +1,7 @@
 package snsproject.snsproject.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import snsproject.snsproject.exception.ErrorCode;
 import snsproject.snsproject.exception.SnsApplicationException;
@@ -8,14 +9,13 @@ import snsproject.snsproject.model.User;
 import snsproject.snsproject.model.entity.UserEntity;
 import snsproject.snsproject.repository.UserEntityRepository;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserEntityRepository userEntityRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public User join(String userName, String password) {
         // 같은 이름이 있는지
@@ -23,7 +23,7 @@ public class UserService {
             throw new SnsApplicationException(ErrorCode.DUPLICATED_USER_NAME, String.format("%s is duplicated",userName));
         });
 
-        UserEntity userEntity = userEntityRepository.save(UserEntity.of(userName, password));
+        UserEntity userEntity = userEntityRepository.save(UserEntity.of(userName, encoder.encode(password)));
 
         return User.fromEntity(userEntity);
     }

@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import snsproject.snsproject.configuration.filter.JwtTokenFilter;
+import snsproject.snsproject.exception.CustomAuthenticationEntryPoint;
 import snsproject.snsproject.service.UserService;
 
 @Configuration
@@ -36,9 +37,9 @@ public class AuthenticationConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .exceptionHandling(exceptions -> exceptions
-//                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-//                )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                )
                 .addFilterBefore(new JwtTokenFilter(key, userService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

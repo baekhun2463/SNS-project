@@ -26,6 +26,11 @@ public class UserService {
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
 
+    public User loadUserByUserName(String userName) {
+        return userEntityRepository.findByUserName(userName).map(User::fromEntity).orElseThrow(() ->
+                new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", userName)));
+    }
+
     @Transactional
     public User join(String userName, String password) {
         // 같은 이름이 있는지
@@ -47,6 +52,6 @@ public class UserService {
             throw new SnsApplicationException(ErrorCode.INVALID_PASSWORD);
         }
 
-        return JwtTokenUtils.generateToken(userName, secretKey, expiredTimeMs);
+        return JwtTokenUtils.generateAccessToken(userName, secretKey, expiredTimeMs);
     }
 }

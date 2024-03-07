@@ -1,7 +1,9 @@
 package snsproject.snsproject.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import java.nio.charset.StandardCharsets;
@@ -11,22 +13,46 @@ import java.util.Date;
 
 public class JwtTokenUtils {
 
-    public static String generateToken(String userName, String secretKey, long expiredTimeMs) {
-        // 키 생성
-        Key signingKey = getKey(secretKey);
-
-        // 토큰 생성
-        return Jwts.builder()
-                .setSubject(userName) // 'subject' 클레임으로 사용자 이름 설정
-                .setIssuedAt(new Date(System.currentTimeMillis())) // 발급 시간 설정
-                .setExpiration(new Date(System.currentTimeMillis() + expiredTimeMs)) // 만료 시간 설정
-                .signWith(signingKey, SignatureAlgorithm.HS256) // 서명 알고리즘과 키 지정
-                .compact(); // JWT 생성
+    public static Boolean validate(String token, String userName, String key) {
+        String usernameByToken = getUsername(token, key);
+        return usernameByToken.equals(userName) && !isTokenExpired(token, key);
     }
 
-    private static Key getKey(String secretKey) {
+    public static Claims extractAllClaims(String token, String key) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey(key))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public static String getUsername(String token, String key) {
+        return extractAllClaims(token, key).get("username", String.class);
+    }
+
+    private static Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public static Boolean isTokenExpired(String token, String key) {
+        Date expiration = extractAllClaims(token, key).getExpiration();
+        return expiration.before(new Date());
+    }
+
+    public static String generateAccessToken(String username, String key, long expiredTimeMs) {
+        return doGenerateToken(username, expiredTimeMs, key);
+    }
+
+    private static String doGenerateToken(String username, long expireTime, String key) {
+        Claims claims = Jwts.claims();
+        claims.put("username", username);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .signWith(getSigningKey(key), SignatureAlgorithm.HS256)
+                .compact();
+    }
 }

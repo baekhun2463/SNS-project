@@ -3,12 +3,17 @@ package snsproject.snsproject.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import snsproject.snsproject.exception.ErrorCode;
 import snsproject.snsproject.exception.SnsApplicationException;
+import snsproject.snsproject.model.Alarm;
 import snsproject.snsproject.model.User;
 import snsproject.snsproject.model.entity.UserEntity;
+import snsproject.snsproject.repository.AlarmEntityRepository;
 import snsproject.snsproject.repository.UserEntityRepository;
 import snsproject.snsproject.util.JwtTokenUtils;
 
@@ -17,6 +22,7 @@ import snsproject.snsproject.util.JwtTokenUtils;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final AlarmEntityRepository alarmEntityRepository;
     private final UserEntityRepository userEntityRepository;
     private final BCryptPasswordEncoder encoder;
 
@@ -53,5 +59,13 @@ public class UserService {
         }
 
         return JwtTokenUtils.generateAccessToken(userName, secretKey, expiredTimeMs);
+    }
+
+    public Page<Alarm> alarmList(String userName, Pageable pageable) {
+        UserEntity userEntity = userEntityRepository.findByUserName(userName).orElseThrow(() ->
+                new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", userName)));
+
+        return alarmEntityRepository.findAllByUser(userEntity, pageable).map(Alarm::fromEntity);
+
     }
 }

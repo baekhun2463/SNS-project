@@ -2,27 +2,27 @@ package snsproject.snsproject.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import snsproject.snsproject.model.entity.LikeEntity;
+import snsproject.snsproject.model.entity.AlarmEntity;
 
 import java.sql.Timestamp;
 
 @Getter
 @AllArgsConstructor
-public class Like {
+public class Alarm {
     private Integer id;
-    private Integer userId;
-    private String userName;
-    private Integer postId;
+    private User user;
+    private AlarmType alarmType;
+    private AlarmArgs args;
     private Timestamp registeredAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
 
-    public static Like fromEntity(LikeEntity entity) {
-        return new Like(
+    public static Alarm fromEntity(AlarmEntity entity) {
+        return new Alarm(
                 entity.getId(),
-                entity.getUser().getId(),
-                entity.getUser().getUserName(),
-                entity.getPost().getId(),
+                User.fromEntity(entity.getUser()),
+                entity.getAlarmType(),
+                entity.getArgs(),
                 entity.getRegisteredAt(),
                 entity.getUpdatedAt(),
                 entity.getDeletedAt()

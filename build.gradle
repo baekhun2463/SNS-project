@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.20.0'
     compileOnly 'org.projectlombok:lombok'
 
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
@@ -70,8 +71,8 @@ task cleanFrontEnd(type: Delete) {
     delete "$projectDir/front-end/static", "$projectDir/front-end/node_modules"
 }
 
-//npmBuild.dependsOn npmInstall
-//copyFrontEnd.dependsOn npmBuild
-//compileJava.dependsOn copyFrontEnd
-//
-//clean.dependsOn cleanFrontEnd
+npmBuild.dependsOn npmInstall
+copyFrontEnd.dependsOn npmBuild
+compileJava.dependsOn copyFrontEnd
+
+clean.dependsOn cleanFrontEnd

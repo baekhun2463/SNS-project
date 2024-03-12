@@ -30,6 +30,7 @@ public class AuthenticationConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authz -> authz
                         .requestMatchers("/api/*/users/join", "/api/*/users/login").permitAll()
+                        .requestMatchers("^(?!/api/).*").permitAll()
                         //.antMatchers("/api/*/users/alarm/subscribe/*").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
@@ -44,4 +45,5 @@ public class AuthenticationConfig {
 
         return http.build();
     }
+
 }

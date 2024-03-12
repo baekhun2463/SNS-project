@@ -7,12 +7,18 @@ spring.datasource:
 
 spring:
     jpa:
+        show-sql: true
         database: postgresql
         hibernate:
             ddl-auto: update
-            dialect: org.hibernate.dialect.PostgreSQLDialect
-            format_sql: true
-        show-sql: true
+            dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        properties:
+            hibernate:
+                format_sql: true
+
+    data:
+        redis:
+            url: redis://snsredis-001.0z1mzd.0001.apn2.cache.amazonaws.com:6379
 
 jwt:
     secret-key: sns_project.baekjihun_project.secret_key

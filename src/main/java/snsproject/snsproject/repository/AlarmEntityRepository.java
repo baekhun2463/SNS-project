@@ -11,5 +11,5 @@ import snsproject.snsproject.model.entity.UserEntity;
 @Repository
 public interface AlarmEntityRepository extends JpaRepository<AlarmEntity, Integer> {
 
-    Page<AlarmEntity> findAllByUser(UserEntity user, Pageable pageable);
+    Page<AlarmEntity> findAllByUserId(Integer user, Pageable pageable);
 }

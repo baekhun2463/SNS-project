@@ -23,6 +23,8 @@ public class AuthenticationConfig {
     @Value("${jwt.secret-key}")
     private String key;
 
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

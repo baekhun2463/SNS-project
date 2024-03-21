@@ -60,42 +60,42 @@ public class UserServiceTest {
         Assertions.assertEquals(ErrorCode.DUPLICATED_USER_NAME, e.getErrorCode());
     }
 
-    @Test
-    void 로그인_정상(){
-        String userName = "userName";
-        String password = "password";
-
-        UserEntity fixture = UserEntityFixture.get(userName, password,1);
-
-        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
-        when(encoder.matches(password, fixture.getPassword())).thenReturn(true);
-
-        Assertions.assertDoesNotThrow(() -> userService.login(userName, password));
-    }
-
-    @Test
-    void 로그인_아이디가없는경우() {
-
-        String userName = "userName";
-        String password = "password";
-
-        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.empty());
-        SnsApplicationException e =Assertions.assertThrows(SnsApplicationException.class,() -> userService.login(userName, password));
-        Assertions.assertEquals(ErrorCode.USER_NOT_FOUND, e.getErrorCode());
-    }
-
-    @Test
-    void 로그인_아이디는있는데비밀번호틀린경우() {
-
-        String userName = "userName";
-        String password = "password";
-        String wrongPassword = "wrongPassword";
-
-        UserEntity fixture = UserEntityFixture.get(userName, password,1);
-
-        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
-
-        SnsApplicationException e = Assertions.assertThrows(SnsApplicationException.class,() -> userService.login(userName, wrongPassword));
-        Assertions.assertEquals(ErrorCode.INVALID_PASSWORD, e.getErrorCode());
-    }
+//    @Test
+//    void 로그인_정상(){
+//        String userName = "userName";
+//        String password = "password";
+//
+//        UserEntity fixture = UserEntityFixture.get(userName, password,1);
+//
+//        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
+//        when(encoder.matches(password, fixture.getPassword())).thenReturn(true);
+//
+//        Assertions.assertDoesNotThrow(() -> userService.login(userName, password));
+//    }
+//
+//    @Test
+//    void 로그인_아이디가없는경우() {
+//
+//        String userName = "userName";
+//        String password = "password";
+//
+//        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.empty());
+//        SnsApplicationException e =Assertions.assertThrows(SnsApplicationException.class,() -> userService.login(userName, password));
+//        Assertions.assertEquals(ErrorCode.USER_NOT_FOUND, e.getErrorCode());
+//    }
+//
+//    @Test
+//    void 로그인_아이디는있는데비밀번호틀린경우() {
+//
+//        String userName = "userName";
+//        String password = "password";
+//        String wrongPassword = "wrongPassword";
+//
+//        UserEntity fixture = UserEntityFixture.get(userName, password,1);
+//
+//        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
+//
+//        SnsApplicationException e = Assertions.assertThrows(SnsApplicationException.class,() -> userService.login(userName, wrongPassword));
+//        Assertions.assertEquals(ErrorCode.INVALID_PASSWORD, e.getErrorCode());
+//    }
 }

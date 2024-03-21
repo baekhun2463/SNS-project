@@ -18,7 +18,7 @@ spring:
 
     data:
         redis:
-            url: redis://snsredis-001.0z1mzd.0001.apn2.cache.amazonaws.com:6379
+            url: redis://snsredis.0z1mzd.ng.0001.apn2.cache.amazonaws.com:6379
 
 jwt:
     secret-key: sns_project.baekjihun_project.secret_key
